@@ -1,0 +1,5 @@
+/* Global resets and base — import order: index.css then App.css */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+img, svg { display: block; max-width: 100%; }
