@@ -45,7 +45,7 @@ export default function RoundResults({
   else verdict = 'Yikes. Maybe try a round of "which color is the sky" first.';
 
   return (
-    <div className="card results-card" role="main" aria-labelledby="results-heading">
+    <div className="card results-card" role="region" aria-labelledby="results-heading">
       <h1
         ref={headingRef}
         id="results-heading"

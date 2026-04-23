@@ -34,7 +34,7 @@ export default function QuestionCard({
   const progress = (questionNumber / totalQuestions) * 100;
 
   return (
-    <div className="card question-card" role="main" aria-labelledby={headingId}>
+    <div className="card question-card" role="region" aria-labelledby={headingId}>
       {/* Top bar: name + score + sound toggle */}
       <div className="qcard-topbar">
         <span className="qcard-player" aria-label={`Player: ${userName}`}>

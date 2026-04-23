@@ -50,13 +50,17 @@ export default function FeedbackModal({ isCorrect, message, correctAnswerText, o
   );
 
   return (
-    <div className="modal-overlay" aria-modal="true" role="dialog">
+    <div
+      className="modal-overlay"
+      aria-modal="true"
+      role="dialog"
+      aria-label={isCorrect ? 'Correct answer!' : 'Wrong answer'}
+    >
       <div
         ref={dialogRef}
         className={`feedback-modal ${isCorrect ? 'feedback-modal--correct' : 'feedback-modal--wrong'}`}
         onKeyDown={handleKeyDown}
         tabIndex={-1}
-        aria-label={isCorrect ? 'Correct answer!' : 'Wrong answer'}
         aria-live="assertive"
       >
         <div className="feedback-icon" aria-hidden="true">

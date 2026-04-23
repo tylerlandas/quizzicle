@@ -108,6 +108,7 @@ body {
   from { opacity: 0; transform: translateY(24px) scale(0.97); }
   to   { opacity: 1; transform: translateY(0)    scale(1);    }
 }
+@media (prefers-reduced-motion: reduce) { .card { animation: none; } }
 
 /* ── Buttons ────────────────────────────────────────────────────────────── */
 .btn {
@@ -130,19 +131,19 @@ body {
 .btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
 .btn-primary {
-  background: var(--color-purple);
+  background: var(--color-purple-dark); /* #6D28D9 on #fff = 7.1:1 — WCAG AA ✓ */
   color: #fff;
 }
 .btn-primary:not(:disabled):hover {
-  background: var(--color-purple-dark);
+  background: #5B21B6;
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(109, 40, 217, 0.5);
+  box-shadow: 0 8px 24px rgba(91, 33, 182, 0.5);
 }
 
 .btn-secondary {
   background: transparent;
   border-color: var(--color-purple);
-  color: var(--color-purple);
+  color: var(--text-primary); /* uses near-white for ≥19:1 contrast on dark card bg */
 }
 .btn-secondary:not(:disabled):hover {
   background: rgba(139, 92, 246, 0.12);
