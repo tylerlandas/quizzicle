@@ -12,7 +12,8 @@
     "test:a11y:ui": "playwright test tests/accessibility.spec.ts --ui",
     "test:ui": "playwright test tests/ui.spec.ts",
     "test:ui:ui": "playwright test tests/ui.spec.ts --ui",
-    "test": "playwright test"
+    "test": "playwright test",
+    "test:backend": "cd backend && npm test"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.2",
