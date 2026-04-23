@@ -4,7 +4,8 @@
       "Bash(npm install:*)",
       "Bash(npx ts-node:*)",
       "Bash(npx tsc:*)",
-      "Bash(npx playwright *)"
+      "Bash(npx playwright *)",
+      "Bash(npm test *)"
     ]
   }
 }
