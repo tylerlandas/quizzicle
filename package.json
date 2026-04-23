@@ -8,8 +8,11 @@
     "dev:frontend": "cd frontend && npm run dev",
     "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
     "seed": "cd backend && npm run seed",
-    "test:a11y": "playwright test",
-    "test:a11y:ui": "playwright test --ui"
+    "test:a11y": "playwright test tests/accessibility.spec.ts",
+    "test:a11y:ui": "playwright test tests/accessibility.spec.ts --ui",
+    "test:ui": "playwright test tests/ui.spec.ts",
+    "test:ui:ui": "playwright test tests/ui.spec.ts --ui",
+    "test": "playwright test"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.2",
