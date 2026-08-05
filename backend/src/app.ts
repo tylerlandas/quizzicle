@@ -6,6 +6,7 @@ import questionRoutes from './routes/questions';
 import sessionRoutes from './routes/sessions';
 
 const app = express();
+const port = process.env.PORT || 4000;
 
 // Local dev origins are always allowed; ALLOWED_ORIGIN adds the deployed
 // frontend URL(s) in production (comma-separated, e.g. a Vercel domain).
@@ -24,5 +25,9 @@ app.use('/api/sessions', sessionRoutes);
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', dbState: mongoose.connection.readyState });
 });
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
 
 export default app;
