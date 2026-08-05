@@ -4,6 +4,11 @@ import app from './app';
 
 dotenv.config();
 
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Quizzicle backend running on http://localhost:${PORT}`);
+});
+
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/quizzicle';
 
 mongoose
