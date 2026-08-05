@@ -47,4 +47,5 @@ router.get('/user/:userId', async (req: Request, res: Response): Promise<void> =
   }
 });
 
+module.exports = router;
 export default router;
