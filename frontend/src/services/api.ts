@@ -1,7 +1,10 @@
 import axios from 'axios';
 import type { User, Question } from '../types';
 
-const http = axios.create({ baseURL: '/api' });
+// In dev, Vite proxies '/api' to the local backend (see vite.config.ts).
+// In production, set VITE_API_URL to the deployed backend's base URL,
+// e.g. https://quizzicle-api.onrender.com/api
+const http = axios.create({ baseURL: import.meta.env.VITE_API_URL || '/api' });
 
 export async function loginUser(name: string): Promise<{ user: User; isNew: boolean }> {
   const { data } = await http.post<{ user: User; isNew: boolean }>('/users/login', { name });
