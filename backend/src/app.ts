@@ -25,4 +25,4 @@ app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', dbState: mongoose.connection.readyState });
 }); */
 
-export default app;
+//export default app;
