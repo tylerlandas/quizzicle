@@ -1,4 +1,4 @@
-import express from 'express';
+import express = require('express'); // from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import userRoutes from './routes/users';
@@ -17,9 +17,13 @@ const prodOrigins = process.env.ALLOWED_ORIGIN
 app.use(cors({ origin: [...devOrigins, ...prodOrigins] }));
 app.use(express.json());
 
+console.log(`Quizzicle Before Routes`);
+
 app.use('/api/users', userRoutes);
 app.use('/api/questions', questionRoutes);
 app.use('/api/sessions', sessionRoutes);
+
+console.log(`Quizzicle After Routes`);
 
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', dbState: mongoose.connection.readyState });

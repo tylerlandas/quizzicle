@@ -10,6 +10,8 @@ app.listen(PORT, () => {
   console.log(`Quizzicle backend running on http://localhost:${PORT}`);
 });
 
+console.log(`Quizzicle backend initialized`);
+
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/quizzicle';
 
 mongoose
