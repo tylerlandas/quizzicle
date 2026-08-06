@@ -17,12 +17,12 @@ const prodOrigins = process.env.ALLOWED_ORIGIN
 app.use(cors({ origin: [...devOrigins, ...prodOrigins] }));
 app.use(express.json());
 
-/* app.use('/api/users', userRoutes);
+app.use('/api/users', userRoutes);
 app.use('/api/questions', questionRoutes);
 app.use('/api/sessions', sessionRoutes);
 
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', dbState: mongoose.connection.readyState });
-}); */
+});
 
-//export default app;
+export default app;

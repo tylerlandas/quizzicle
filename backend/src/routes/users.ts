@@ -93,5 +93,5 @@ router.patch('/:id/preferences', async (req: Request, res: Response): Promise<vo
   }
 });
 
-module.exports = router;
+// module.exports = router;
 export default router;
