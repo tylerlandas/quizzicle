@@ -27,6 +27,7 @@ console.log(`Quizzicle After Routes`);
 
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', dbState: mongoose.connection.readyState });
+  console.log(`api health called.`);
 });
 
 module.exports = app;
