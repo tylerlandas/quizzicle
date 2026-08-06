@@ -7,7 +7,13 @@
       "Bash(npx playwright *)",
       "Bash(npm test *)",
       "Bash(npm run *)",
-      "Bash(npx jest *)"
+      "Bash(npx jest *)",
+      "Bash(git -C /c/DEV/quizzicle log --oneline -10)",
+      "Bash(git -C /c/DEV/quizzicle show 23431cb --stat)",
+      "Bash(pkill -f \"node src/server.js\")",
+      "Bash(powershell -NoProfile -Command \"Get-NetTCPConnection -LocalPort 3001 -ErrorAction SilentlyContinue | Select-Object -Property LocalPort,OwningProcess; Get-Process -Id \\(Get-NetTCPConnection -LocalPort 3001 -ErrorAction SilentlyContinue\\).OwningProcess -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,StartTime,Path\")",
+      "Bash(powershell -NoProfile -Command \"Stop-Process -Id 10436 -Force -ErrorAction SilentlyContinue; Start-Sleep -Seconds 1; Get-NetTCPConnection -LocalPort 3001 -ErrorAction SilentlyContinue\")",
+      "Bash(powershell -NoProfile -Command \"Stop-Process -Id \\(Get-NetTCPConnection -LocalPort 3001 -ErrorAction SilentlyContinue\\).OwningProcess -Force -ErrorAction SilentlyContinue\")"
     ]
   }
 }
