@@ -5,6 +5,7 @@ const cors = require('cors');
 const userRoutes = require('./routes/users');
 const questionRoutes = require('./routes/questions');
 const sessionRoutes = require('./routes/sessions');
+const { seedQuestions } = require('./seed');
 
 const app = express();
 
@@ -20,11 +21,6 @@ app.use(express.json());
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/quizzicle';
 
-mongoose
-  .connect(MONGODB_URI)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.error('MongoDB connection error:', err));
-
 app.use('/api/users', userRoutes);
 app.use('/api/questions', questionRoutes);
 app.use('/api/sessions', sessionRoutes);
@@ -34,4 +30,17 @@ app.get('/api/health', (_req, res) => {
 });
 
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, '0.0.0.0', () => console.log(`Server running on port ${PORT}`));
+
+mongoose
+  .connect(MONGODB_URI)
+  .then(async () => {
+    console.log('Connected to MongoDB');
+    await seedQuestions(); // no-op if questions already exist
+  })
+  .then(() => {
+    app.listen(PORT, '0.0.0.0', () => console.log(`Server running on port ${PORT}`));
+  })
+  .catch((err) => {
+    console.error('MongoDB connection error:', err);
+    process.exit(1);
+  });

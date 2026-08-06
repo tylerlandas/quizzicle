@@ -1,8 +1,5 @@
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
 const Question = require('./models/Question');
-
-dotenv.config();
 
 const questions = [
   // ── History ──────────────────────────────────────────────────────────────
@@ -232,24 +229,52 @@ const questions = [
   },
 ];
 
-async function seed() {
-  const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/quizzicle';
-  try {
-    await mongoose.connect(uri);
-    console.log('Connected to MongoDB');
-
+/**
+ * Seed the questions collection.
+ *
+ * By default this is idempotent/non-destructive: if the collection already
+ * has documents, it does nothing (so it's safe to call on every server
+ * boot without orphaning User.questionsAnswered references, which store
+ * Question _ids). Pass `force: true` to wipe and reseed unconditionally
+ * (e.g. `npm run seed` from the CLI).
+ *
+ * Assumes mongoose is already connected; does not connect/disconnect itself.
+ */
+async function seedQuestions({ force = false } = {}) {
+  if (!force) {
+    const existingCount = await Question.countDocuments();
+    if (existingCount > 0) {
+      console.log(`Skipping question seed (${existingCount} already present).`);
+      return { seeded: false, count: existingCount };
+    }
+  } else {
     await Question.deleteMany({});
     console.log('Cleared existing questions');
-
-    await Question.insertMany(questions);
-    console.log(`Seeded ${questions.length} questions successfully!`);
-
-    await mongoose.disconnect();
-    console.log('Done.');
-  } catch (err) {
-    console.error('Seed error:', err);
-    process.exit(1);
   }
+
+  await Question.insertMany(questions);
+  console.log(`Seeded ${questions.length} questions successfully!`);
+  return { seeded: true, count: questions.length };
 }
 
-seed();
+// CLI entrypoint: `npm run seed` connects, force-reseeds, and disconnects.
+if (require.main === module) {
+  const dotenv = require('dotenv');
+  dotenv.config();
+
+  (async () => {
+    const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/quizzicle';
+    try {
+      await mongoose.connect(uri);
+      console.log('Connected to MongoDB');
+      await seedQuestions({ force: true });
+      await mongoose.disconnect();
+      console.log('Done.');
+    } catch (err) {
+      console.error('Seed error:', err);
+      process.exit(1);
+    }
+  })();
+}
+
+module.exports = { questions, seedQuestions };
