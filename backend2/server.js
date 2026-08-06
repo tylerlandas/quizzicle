@@ -11,7 +11,11 @@ const app = express();
 const corsOrigins = (process.env.CORS_ORIGIN || 'http://localhost:5173,http://127.0.0.1:5173')
   .split(',')
   .map((origin) => origin.trim());
-app.use(cors({ origin: corsOrigins }));
+app.use(cors({ 
+  origin: corsOrigins,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 app.use(express.json());
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/quizzicle';
