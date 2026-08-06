@@ -13,12 +13,12 @@
  *  · No authorization on session creation — any client can forge sessions for any userId
  */
 
-import request from 'supertest';
-import mongoose from 'mongoose';
-import app from '../app';
-import User from '../models/User';
-import GameSession from '../models/GameSession';
-import { connect, disconnect, clearDatabase } from './db';
+const request = require('supertest');
+const mongoose = require('mongoose');
+const app = require('../app');
+const User = require('../models/User');
+const GameSession = require('../models/GameSession');
+const { connect, disconnect, clearDatabase } = require('./db');
 
 beforeAll(async () => { await connect(); });
 afterAll(async () => { await disconnect(); });
@@ -30,16 +30,7 @@ async function createUser(name = 'TestUser') {
   return User.create({ name });
 }
 
-function sessionPayload(
-  userId: string,
-  overrides: Partial<{
-    userName: string;
-    questionsAsked: string[];
-    correctAnswers: number;
-    wrongAnswers: number;
-    score: number;
-  }> = {}
-) {
+function sessionPayload(userId, overrides = {}) {
   return {
     userId,
     userName: 'TestUser',
@@ -275,7 +266,7 @@ describe('GET /api/sessions/user/:userId', () => {
       await GameSession.insertMany(sessions);
       const res = await request(app).get(`/api/sessions/user/${user._id}`);
       // Scores 12 through 3 (newest 10) — the two oldest (score 1, 2) should not appear
-      const scores: number[] = res.body.map((s: { score: number }) => s.score);
+      const scores = res.body.map((s) => s.score);
       expect(scores).not.toContain(1);
       expect(scores).not.toContain(2);
     });

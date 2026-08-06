@@ -19,10 +19,10 @@ npm run seed
 
 ### Backend (from `backend/`)
 ```bash
-npm run dev      # ts-node + nodemon watch mode
-npm run build    # tsc compile to dist/
-npm start        # run compiled dist/server.js
-npm run seed     # ts-node src/seed.ts
+npm run dev      # nodemon watch mode (plain Node, no build step)
+npm start        # node src/server.js
+npm run seed     # node src/seed.js
+npm test         # jest --runInBand
 ```
 
 ### Frontend (from `frontend/`)
@@ -32,21 +32,23 @@ npm run build    # tsc + vite build
 npm run preview  # preview production build
 ```
 
-There are no test scripts configured in this project.
+The backend has a Jest + Supertest suite (`npm run test:backend` from root, or `npm test` from `backend/`). The frontend/root Playwright suites (`npm run test:ui`, `npm run test:a11y`) are separate.
 
 ## Architecture
 
 ### Overview
-Monorepo with a React/TypeScript frontend (Vite) and an Express/TypeScript backend connected to MongoDB via Mongoose. No shared packages — types are duplicated between frontend (`frontend/src/types/index.ts`) and backend models.
+Monorepo with a React/TypeScript frontend (Vite) and an Express/JavaScript backend connected to MongoDB via Mongoose. No shared packages — the frontend defines its own types (`frontend/src/types/index.ts`) that mirror the shape of the backend's plain-JS Mongoose models.
 
-### Backend (`backend/src/`)
-- **`server.ts`** — entry point; connects Mongoose, registers routes, starts Express on port 3001. `MONGODB_URI` defaults to `mongodb://localhost:27017/quizzicle`.
+### Backend (`backend/src/`) — plain JavaScript (CommonJS), no build step
+- **`server.js`** — entry point; connects Mongoose, registers routes, starts Express on port 3001. `MONGODB_URI` defaults to `mongodb://localhost:27017/quizzicle`.
+- **`app.js`** — Express app setup (CORS, JSON body parsing, route mounting, `/api/health`); exported separately from `server.js` so tests can import it without binding a port.
 - **`routes/`** — three route files mounted at `/api/users`, `/api/questions`, `/api/sessions`
-  - `users.ts`: `POST /login` (upsert by name), `PATCH /:id/score` (increment totalScore, gamesPlayed; add to questionsAnswered set)
-  - `questions.ts`: `GET /random` — accepts `count` and `exclude` (comma-separated IDs) query params; returns random questions excluding already-seen IDs
-  - `sessions.ts`: `POST /` (save completed session), `GET /user/:userId` (last 10 sessions)
+  - `users.js`: `POST /login` (upsert by name), `PATCH /:id/score` (increment totalScore, gamesPlayed; add to questionsAnswered set)
+  - `questions.js`: `GET /random` — accepts `count` and `exclude` (comma-separated IDs) query params; returns random questions excluding already-seen IDs
+  - `sessions.js`: `POST /` (save completed session), `GET /user/:userId` (last 10 sessions)
 - **`models/`** — three Mongoose models: `User`, `Question`, `GameSession`
-- **`seed.ts`** — standalone script that populates the `questions` collection
+- **`seed.js`** — standalone script that populates the `questions` collection
+- **`tests/`** — Jest + Supertest integration tests against `app.js`, backed by `mongodb-memory-server` (see `tests/db.js`)
 
 ### Frontend (`frontend/src/`)
 - **`App.tsx`** — single top-level stateful component; owns all game state and drives phase transitions. No routing library — phase is managed with a `GamePhase` union type (`'name-entry' | 'loading' | 'playing' | 'feedback' | 'round-results'`).

@@ -1,14 +1,14 @@
-import { Router, Request, Response } from 'express';
-import mongoose from 'mongoose';
-import Question from '../models/Question';
+const { Router } = require('express');
+const mongoose = require('mongoose');
+const Question = require('../models/Question');
 
 const router = Router();
 
 // Get random questions, optionally excluding already-seen ones
-router.get('/random', async (req: Request, res: Response): Promise<void> => {
+router.get('/random', async (req, res) => {
   try {
-    const count = Math.min(parseInt(req.query.count as string) || 5, 20);
-    const excludeStr = req.query.exclude as string;
+    const count = Math.min(parseInt(req.query.count) || 5, 20);
+    const excludeStr = req.query.exclude;
 
     const excludeIds =
       excludeStr
@@ -33,6 +33,4 @@ router.get('/random', async (req: Request, res: Response): Promise<void> => {
   }
 });
 
-// module.exports = router;
-export default router;
-
+module.exports = router;

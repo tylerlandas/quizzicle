@@ -1,10 +1,10 @@
-import { Router, Request, Response } from 'express';
-import User from '../models/User';
+const { Router } = require('express');
+const User = require('../models/User');
 
 const router = Router();
 
 // Leaderboard — all users sorted by totalScore desc
-router.get('/leaderboard', async (_req: Request, res: Response): Promise<void> => {
+router.get('/leaderboard', async (_req, res) => {
   try {
     const users = await User.find({}, 'name totalScore gamesPlayed')
       .sort({ totalScore: -1 })
@@ -17,9 +17,9 @@ router.get('/leaderboard', async (_req: Request, res: Response): Promise<void> =
 });
 
 // Login or register user
-router.post('/login', async (req: Request, res: Response): Promise<void> => {
+router.post('/login', async (req, res) => {
   try {
-    const { name } = req.body as { name?: string };
+    const { name } = req.body;
     if (!name?.trim()) {
       res.status(400).json({ error: 'Name is required' });
       return;
@@ -42,12 +42,9 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
 });
 
 // Update user score and answered questions after quitting
-router.patch('/:id/score', async (req: Request, res: Response): Promise<void> => {
+router.patch('/:id/score', async (req, res) => {
   try {
-    const { score, questionsAnswered } = req.body as {
-      score: number;
-      questionsAnswered: string[];
-    };
+    const { score, questionsAnswered } = req.body;
 
     const user = await User.findByIdAndUpdate(
       req.params.id,
@@ -71,9 +68,9 @@ router.patch('/:id/score', async (req: Request, res: Response): Promise<void> =>
 });
 
 // Update user preferences (e.g. soundEnabled)
-router.patch('/:id/preferences', async (req: Request, res: Response): Promise<void> => {
+router.patch('/:id/preferences', async (req, res) => {
   try {
-    const { soundEnabled } = req.body as { soundEnabled?: boolean };
+    const { soundEnabled } = req.body;
 
     const user = await User.findByIdAndUpdate(
       req.params.id,
@@ -93,5 +90,4 @@ router.patch('/:id/preferences', async (req: Request, res: Response): Promise<vo
   }
 });
 
-// module.exports = router;
-export default router;
+module.exports = router;

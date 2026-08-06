@@ -1,9 +1,9 @@
-import express from 'express';
-import cors from 'cors';
-import mongoose from 'mongoose';
-import userRoutes from './routes/users';
-import questionRoutes from './routes/questions';
-import sessionRoutes from './routes/sessions';
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const userRoutes = require('./routes/users');
+const questionRoutes = require('./routes/questions');
+const sessionRoutes = require('./routes/sessions');
 
 const app = express();
 
@@ -29,4 +29,4 @@ app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', dbState: mongoose.connection.readyState });
 });
 
-export default app;
+module.exports = app;

@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-import Question from './models/Question';
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const Question = require('./models/Question');
 
 dotenv.config();
 

@@ -11,9 +11,9 @@
  *  · Undefined routes return 404 (Express default; no sensitive data in response)
  */
 
-import request from 'supertest';
-import app from '../app';
-import { connect, disconnect } from './db';
+const request = require('supertest');
+const app = require('../app');
+const { connect, disconnect } = require('./db');
 
 beforeAll(async () => { await connect(); });
 afterAll(async () => { await disconnect(); });

@@ -1,20 +1,12 @@
-import { Router, Request, Response } from 'express';
-import GameSession from '../models/GameSession';
+const { Router } = require('express');
+const GameSession = require('../models/GameSession');
 
 const router = Router();
 
 // Save a completed game session
-router.post('/', async (req: Request, res: Response): Promise<void> => {
+router.post('/', async (req, res) => {
   try {
-    const { userId, userName, questionsAsked, correctAnswers, wrongAnswers, score } =
-      req.body as {
-        userId: string;
-        userName: string;
-        questionsAsked: string[];
-        correctAnswers: number;
-        wrongAnswers: number;
-        score: number;
-      };
+    const { userId, userName, questionsAsked, correctAnswers, wrongAnswers, score } = req.body;
 
     const session = new GameSession({
       userId,
@@ -34,7 +26,7 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
 });
 
 // Get recent sessions for a user
-router.get('/user/:userId', async (req: Request, res: Response): Promise<void> => {
+router.get('/user/:userId', async (req, res) => {
   try {
     const sessions = await GameSession.find({ userId: req.params.userId })
       .sort({ completedAt: -1 })
@@ -47,5 +39,4 @@ router.get('/user/:userId', async (req: Request, res: Response): Promise<void> =
   }
 });
 
-// module.exports = router;
-export default router;
+module.exports = router;

@@ -18,11 +18,11 @@
  *  · Negative score is accepted without range validation (documented gap)
  */
 
-import request from 'supertest';
-import mongoose from 'mongoose';
-import app from '../app';
-import User from '../models/User';
-import { connect, disconnect, clearDatabase } from './db';
+const request = require('supertest');
+const mongoose = require('mongoose');
+const app = require('../app');
+const User = require('../models/User');
+const { connect, disconnect, clearDatabase } = require('./db');
 
 beforeAll(async () => { await connect(); });
 afterAll(async () => { await disconnect(); });

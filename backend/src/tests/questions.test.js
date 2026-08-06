@@ -16,11 +16,10 @@
  *  · $sample aggregation is not directly injectable via query params
  */
 
-import request from 'supertest';
-import mongoose from 'mongoose';
-import app from '../app';
-import Question from '../models/Question';
-import { connect, disconnect, clearDatabase } from './db';
+const request = require('supertest');
+const app = require('../app');
+const Question = require('../models/Question');
+const { connect, disconnect, clearDatabase } = require('./db');
 
 beforeAll(async () => { await connect(); });
 afterAll(async () => { await disconnect(); });
@@ -28,21 +27,18 @@ afterEach(async () => { await clearDatabase(); });
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
-function makeQuestion(overrides: Partial<{
-  text: string; options: string[]; correctAnswer: number;
-  category: string; difficulty: 'easy' | 'medium' | 'hard';
-}> = {}) {
+function makeQuestion(overrides = {}) {
   return {
     text: 'Sample question?',
     options: ['A', 'B', 'C', 'D'],
     correctAnswer: 0,
     category: 'Test',
-    difficulty: 'easy' as const,
+    difficulty: 'easy',
     ...overrides,
   };
 }
 
-async function seedQuestions(count: number) {
+async function seedQuestions(count) {
   const docs = Array.from({ length: count }, (_, i) =>
     makeQuestion({ text: `Question ${i + 1}` })
   );
@@ -159,7 +155,7 @@ describe('GET /api/questions/random', () => {
       const excludeId = seeded[0]._id.toString();
       const res = await request(app).get(`/api/questions/random?count=5&exclude=${excludeId}`);
       expect(res.status).toBe(200);
-      const returnedIds = res.body.map((q: { _id: string }) => q._id);
+      const returnedIds = res.body.map((q) => q._id);
       expect(returnedIds).not.toContain(excludeId);
     });
 
@@ -170,7 +166,7 @@ describe('GET /api/questions/random', () => {
         `/api/questions/random?count=5&exclude=${excludeIds.join(',')}`
       );
       expect(res.status).toBe(200);
-      const returnedIds = res.body.map((q: { _id: string }) => q._id);
+      const returnedIds = res.body.map((q) => q._id);
       for (const id of excludeIds) {
         expect(returnedIds).not.toContain(id);
       }
@@ -210,7 +206,7 @@ describe('GET /api/questions/random', () => {
         `/api/questions/random?count=5&exclude=${validId},bad-id,another-bad-id`
       );
       expect(res.status).toBe(200);
-      const returnedIds = res.body.map((q: { _id: string }) => q._id);
+      const returnedIds = res.body.map((q) => q._id);
       // The valid ID is excluded; invalid IDs don't cause errors
       expect(returnedIds).not.toContain(validId);
     });
@@ -247,8 +243,8 @@ describe('GET /api/questions/random', () => {
       await seedQuestions(20);
       const res1 = await request(app).get('/api/questions/random?count=10');
       const res2 = await request(app).get('/api/questions/random?count=10');
-      const ids1 = res1.body.map((q: { _id: string }) => q._id).join(',');
-      const ids2 = res2.body.map((q: { _id: string }) => q._id).join(',');
+      const ids1 = res1.body.map((q) => q._id).join(',');
+      const ids2 = res2.body.map((q) => q._id).join(',');
       // With 20 questions and $sample of 10, the probability of exact same order is negligible
       // This test is probabilistic — a very rare flap is theoretically possible
       expect(ids1).not.toBe(ids2);
