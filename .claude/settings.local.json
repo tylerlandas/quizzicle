@@ -13,7 +13,22 @@
       "Bash(pkill -f \"node src/server.js\")",
       "Bash(powershell -NoProfile -Command \"Get-NetTCPConnection -LocalPort 3001 -ErrorAction SilentlyContinue | Select-Object -Property LocalPort,OwningProcess; Get-Process -Id \\(Get-NetTCPConnection -LocalPort 3001 -ErrorAction SilentlyContinue\\).OwningProcess -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,StartTime,Path\")",
       "Bash(powershell -NoProfile -Command \"Stop-Process -Id 10436 -Force -ErrorAction SilentlyContinue; Start-Sleep -Seconds 1; Get-NetTCPConnection -LocalPort 3001 -ErrorAction SilentlyContinue\")",
-      "Bash(powershell -NoProfile -Command \"Stop-Process -Id \\(Get-NetTCPConnection -LocalPort 3001 -ErrorAction SilentlyContinue\\).OwningProcess -Force -ErrorAction SilentlyContinue\")"
+      "Bash(powershell -NoProfile -Command \"Stop-Process -Id \\(Get-NetTCPConnection -LocalPort 3001 -ErrorAction SilentlyContinue\\).OwningProcess -Force -ErrorAction SilentlyContinue\")",
+      "Bash(node -e ' *)",
+      "Bash(curl -s http://localhost:3001/api/health)",
+      "Bash(curl -s -X POST http://localhost:3001/api/users/login -H \"Content-Type: application/json\" -d '{\"name\":\"backend2-smoketest\"}')",
+      "Bash(curl -s \"http://localhost:3001/api/questions/random?count=2\")",
+      "Bash(nohup node server.js)",
+      "Bash(echo \"started PID $!\")",
+      "Bash(curl -s http://localhost:3001/api/users/leaderboard)",
+      "Bash(curl -s -X PATCH http://localhost:3001/api/users/6a74f088d4b704e8a64ad844/score -H 'Content-Type: application/json' -d '{\"score\":10,\"questionsAnswered\":[\"a\",\"b\"]}')",
+      "Bash(curl -s -X POST http://localhost:3001/api/sessions -H 'Content-Type: application/json' -d '{\"userId\":\"6a74f088d4b704e8a64ad844\",\"userName\":\"backend2-smoketest\",\"questionsAsked\":[\"a\",\"b\"],\"correctAnswers\":1,\"wrongAnswers\":1,\"score\":10}')",
+      "Bash(curl -s http://localhost:3001/api/sessions/user/6a74f088d4b704e8a64ad844)",
+      "Bash(node *)",
+      "Bash(curl -s -m 2 http://localhost:3001/api/health)",
+      "Bash(echo \"exit=$?\")",
+      "Bash(netstat -ano)",
+      "Bash(taskkill *)"
     ]
   }
 }
