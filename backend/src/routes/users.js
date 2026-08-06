@@ -3,8 +3,12 @@ const User = require('../models/User');
 
 const router = Router();
 
+console.error('In users route');
+
 // Leaderboard — all users sorted by totalScore desc
 router.get('/leaderboard', async (_req, res) => {
+  console.error('In leaderboard route');
+
   try {
     const users = await User.find({}, 'name totalScore gamesPlayed')
       .sort({ totalScore: -1 })
